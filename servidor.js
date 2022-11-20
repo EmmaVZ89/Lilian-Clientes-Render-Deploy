@@ -6,6 +6,8 @@ const app = express();
 
 const path = require("path");
 
+require("dotenv").config();
+
 var port = process.env.PORT || 8000;
 
 // VISTAS
@@ -27,7 +29,7 @@ app.use(express.json());
 const jwt = require("jsonwebtoken");
 
 //SE ESTABLECE LA CLAVE SECRETA PARA EL TOKEN
-app.set("key", "cl@ve_secreta");
+app.set("key", process.env.JWT_SECRET);
 app.use(express.urlencoded({ extended: false }));
 
 //AGREGO MULTER
@@ -57,11 +59,11 @@ app.use(express.static("public"));
 const mysql = require("mysql");
 const myconn = require("express-myconnection");
 const db_options = {
-  host: "us-cdbr-east-06.cleardb.net",
+  host: process.env.HOST,
   port: 3306,
-  user: "b5a6f83453a7d4",
-  password: "a2970c98",
-  database: "heroku_71c1a86ec0baa78",
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 };
 app.use(myconn(mysql, db_options, "single"));
 
