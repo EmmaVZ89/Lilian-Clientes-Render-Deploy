@@ -2,7 +2,7 @@ import { Cliente, Ficha } from "./cliente.js";
 import createTable from "./tabla.js";
 import { updateControlList, activateControlFields, dateFormat } from "./listaControles.js";
 
-const URL = "https://lilian-clientes.herokuapp.com/";
+const URL = "https://lilian-clientes.onrender.com/";
 
 let animateX = document.querySelectorAll(".animated-scroll-right");
 animateX[0].style.opacity = 1;
