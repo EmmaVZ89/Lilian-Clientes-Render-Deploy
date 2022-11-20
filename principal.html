@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./assets/favicon.png" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css"
+    />
+    <link rel="stylesheet" href="./css/estilos.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Ruthie&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline+Text:wght@900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./js/script.js" type="module" defer></script>
+    <title>LILIAN - Gestor de Clientes</title>
+  </head>
+  <body>
+    <header id="header-nav">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="z-index: 1000">
+        <div class="container-fluid">
+          <a href="https://lilian.ar/" target="_blank"
+            ><img class="lilian-logo" src="assets/lilian-logo.png" alt="logo Lilian"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="mx-auto"></div>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <img id="foto-usuario" src="./assets/default.jpg" alt="foto perfil">
+                <span id="nombre-usuario">Usuario</span>
+                <button id="btn-logout" class="btn btn-secondary">Cerrar sesión</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <div class="h1-tag container">
+          <h1>Lilian</h1>
+          <div class="h4-tag">
+            <h4>Peluquería</h4>
+            <h4>Coiffeur</h4>
+          </div>
+        </div>
+      </section>
+
+      <div class="container contenedor-buscador animated-scroll-right">
+        <h4 class="titulo-buscador">Buscador</h4>
+        <div class="form-floating mb-3 input-form-buscar">
+          <input
+            class="form-control"
+            type="text"
+            id="txtNombreBusqueda"
+            name="nombreBusqueda"
+            placeholder="Nombre"
+            required
+          />
+          <label class="" for="txtNombreBusqueda">Nombre </label>
+        </div>
+
+        <div class="form-floating mb-3 input-form-buscar">
+          <input
+            class="form-control"
+            type="text"
+            id="txtApellidoBusqueda"
+            name="apellidoBusqueda"
+            placeholder="Apellido"
+            required
+          />
+          <label class="" for="txtApellidoBusqueda">Apellido </label>
+          <a href="#listadoClientes">
+            <button
+              id="btn-buscar"
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Buscar un cliente."
+            >
+              Buscar Cliente
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <h2 class="tituloListado">Listado de Clientes</h2>
+
+      <div class="container">
+        <div class="contenedor-reset">
+          <button
+          id="btn-resetLista"
+          type="button"
+          class="btn btn-warning"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Carga todos los clientes."
+        >
+          Cargar Todos
+        </button>  
+        </div>
+        <div class="row">
+          <div id="listadoClientes" class="col contenedorTabla"></div>
+          <div id="spinner"></div>
+        </div>
+      </div>
+
+      <div class="container btn-crud-contenedor">
+        <button
+          id="btn-ficha"
+          type="button"
+          class="mt-5 mx-5 btn btn-info btn-crud"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Ver ficha de un cliente."
+        >
+          Ver Ficha
+        </button>
+        <button
+          id="btn-crear"
+          type="button"
+          class="mt-5 mx-5 btn btn-primary btn-crud"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Agregar un nuevo cliente."
+        >
+          Agregar
+        </button>
+        <button
+          id="btn-modificar"
+          type="button"
+          class="mt-5 mx-5 btn btn-success btn-crud"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Modificar datos de un cliente."
+        >
+          Modificar
+        </button>
+        <button
+          id="btn-eliminar"
+          type="button"
+          class="mt-5 mx-5 btn btn-danger btn-crud"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Eliminar un cliente."
+        >
+          Eliminar
+        </button>
+      </div>
+
+      <!-- MODAL DE CLIENTES-->
+      <div
+        class="modal fade"
+        id="miModal"
+        tabindex="-1"
+        data-bs-backdrop="static"
+        aria-hidden="true"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content" id="contenedor-modal">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTitle">Agregar Nuevo Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="">
+                <fieldset class="container form-contenedor">
+                  <legend>Datos Personales</legend>
+
+                  <div class="form-contenedor">
+                    <div class="form-floating mb-3 input-form">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="txtNombre"
+                        name="nombre"
+                        placeholder="Nombre"
+                        required
+                      />
+                      <label class="" for="txtNombre">Nombre </label>
+                    </div>
+
+                    <div class="form-floating mb-3 input-form">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="txtApellido"
+                        name="apellido"
+                        placeholder="Apellido"
+                        required
+                      />
+                      <label for="txtApellido">Apellido </label>
+                    </div>
+
+                    <div class="form-floating mb-3 input-form">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="txtTelefono"
+                        name="telefono"
+                        placeholder="N° de Telefono"
+                        required
+                      />
+                      <label for="txtTelefono">N° de Telefono </label>
+                    </div>
+
+                    <div class="mb-3 area-observaciones">
+                      <textarea
+                        class="form-control"
+                        id="txtArea"
+                        name="observacion"
+                        rows="3"
+                        placeholder="Observaciones"
+                      ></textarea>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="container form-contenedor">
+                  <legend>Fichas</legend>
+
+                  <div class="form-contenedor">
+                    <div class="form-floating mb-3 input-form">
+                      <input
+                        class="form-control"
+                        type="date"
+                        id="txtFecha"
+                        name="fecha"
+                        value=""
+                        placeholder="fecha"
+                        required
+                        disabled
+                      />
+                      <label for="txtFecha">Fecha </label>
+                    </div>
+
+                    <div class="mb-3 area-observaciones">
+                      <textarea
+                        class="form-control"
+                        id="txtDetalle"
+                        name="detalle"
+                        rows="5"
+                        placeholder="Detalle de servicio"
+                      ></textarea>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="modal-footer botones-form-crud">
+                  <button id="btn-form" type="submit" class="btn btn-primary">Guardar</button>
+                  <button id="btn-form-cancel" type="button" class="btn btn-secondary">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  MODAL DE CONTROLES -->
+      <div
+        class="modal fade"
+        id="modalControles"
+        tabindex="-1"
+        data-bs-backdrop="static"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content bg-modal-control">
+            <div class="modal-header">
+              <h5 class="modal-title">Menu de Fichas</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="form-controls">
+                <div class="container dropControl">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-warning dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Fichas
+                    </button>
+                    <ul
+                      id="listaControles"
+                      class="dropdown-menu dropUl"
+                      aria-labelledby="dropdownMenuButton1"
+                    ></ul>
+                  </div>
+                </div>
+
+                <div class="container form-contenedor">
+                  <div class="form-floating mb-3 input-form">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="nombre"
+                      placeholder="Nombre"
+                      required
+                      disabled
+                    />
+                    <label for="txtNombre">Nombre </label>
+                  </div>
+
+                  <div class="form-floating mb-3 input-form">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="apellido"
+                      placeholder="Apellido"
+                      required
+                      disabled
+                    />
+                    <label for="txtApellido">Apellido </label>
+                  </div>
+                </div>
+
+                <div class="container form-contenedor">
+                  <div class="form-floating mb-3 input-form">
+                    <input
+                      id="fechaControl"
+                      class="form-control"
+                      type="date"
+                      name="fecha"
+                      value=""
+                      placeholder="fecha"
+                      required
+                    />
+                    <label for="txtFecha">Fecha </label>
+                  </div>
+
+                  <div class="mb-3 area-observaciones">
+                    <textarea
+                      class="form-control"
+                      id="txtDetalleFicha"
+                      name="detalle"
+                      rows="5"
+                      placeholder="Detalle de servicio"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="modal-footer botones-crud-fichas">
+                  <button id="btn-controles-agregar" type="submit" class="btn btn-primary">Agregar</button>
+                  <button id="btn-controles-modificar" type="submit" class="btn btn-success">
+                    Modificar
+                  </button>
+                  <button id="btn-controles-eliminar" type="submit" class="btn btn-danger">Eliminar</button>
+                  <button id="btn-controles-cancel" type="button" class="btn btn-secondary">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small">
+      <div class="text-center py-1">
+        © 2022 Copyright: Peluquería Lilian
+        <p>Creado por <a href="https://github.com/EmmaVZ89" target="_blank">Emmanuel V. Zelarayan</a></p>
+      </div>
+    </footer>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.12.1/datatables.min.js"
+    ></script>
+    <script></script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css?family=Anton|Roboto");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("../assets/fondo.jpg");
+  /* background-attachment: fixed; */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.h1-tag {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #000;
+  text-shadow: 4px 4px 2px #ddd;
+  animation: titulo-h1 3s;
+}
+.h1-tag h1 {
+  font-size: 7rem;
+  font-family: "Ruthie";
+}
+.h4-tag {
+  margin-top: -20px;
+  text-transform: uppercase;
+  font-family: "Big Shoulders Inline Text", cursive;
+}
+.h4-tag h4 {
+  margin-top: -10px;
+}
+
+#form-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  width: 50vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  padding: 1rem 0;
+  box-shadow: 4px 4px 6px black;
+  margin-top: 4%;
+  margin-bottom: 2rem;
+}
+
+.inicio-sesion-titulo {
+  font-family: "Big Shoulders Inline Text", cursive;
+  color: white;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 2px black;
+}
+
+#btn-iniciar {
+  width: 15rem;
+  border-radius: 5px;
+  border: 1px solid gray;
+  box-shadow: 2px 2px 2px black;
+  margin-top: 1rem;
+}
+
+.form-control {
+  width: 20rem;
+}
+
+.page-footer {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  line-height: 25px;
+}
+
+/* Animated Scroll right */
+.animated-scroll-right {
+  opacity: 0;
+  transition: all 1s;
+}
+
+.view-from-right {
+  animation: viewFromRight 0.5s;
+}
+
+@keyframes viewFromRight {
+  0% {
+    transform: translateX(-400px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes titulo-h1 {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  #form-container {
+    width: 95%;
+    margin-top: 20%;
+  }
+}
